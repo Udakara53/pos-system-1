@@ -28,7 +28,7 @@ public class User {
         this.password = password;
     }
 
-    @Override
+    @Override   //override object class toString()
     public String toString() {
         return "User{" +
                 "username='" + username + '\'' +
