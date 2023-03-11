@@ -6,7 +6,6 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-
 <AnchorPane fx:id="dashboardContext" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="lk.icet.pos.control.DashboardFormController">
    <children>
       <Label layoutX="21.0" layoutY="14.0" text="Dashboard">
@@ -25,10 +24,10 @@
             <Font name="System Bold" size="14.0" />
          </font>
       </Button>
-      <Button layoutX="25.0" layoutY="84.0" mnemonicParsing="false" prefHeight="102.0" prefWidth="155.0" text="Customer" />
-      <Button layoutX="222.0" layoutY="84.0" mnemonicParsing="false" prefHeight="102.0" prefWidth="155.0" text="Item" />
-      <Button layoutX="407.0" layoutY="84.0" mnemonicParsing="false" prefHeight="102.0" prefWidth="155.0" text="Orders" />
-      <Button layoutX="341.0" layoutY="222.0" mnemonicParsing="false" prefHeight="110.0" prefWidth="155.0" text="Income" />
-      <Button layoutX="93.0" layoutY="226.0" mnemonicParsing="false" prefHeight="102.0" prefWidth="155.0" text="New Order" />
+      <Button layoutX="25.0" layoutY="84.0" mnemonicParsing="false" onAction="#openCustomerForm" prefHeight="102.0" prefWidth="155.0" text="Customer" />
+      <Button layoutX="222.0" layoutY="84.0" mnemonicParsing="false" onAction="#openItemForm" prefHeight="102.0" prefWidth="155.0" text="Item" />
+      <Button layoutX="407.0" layoutY="84.0" mnemonicParsing="false" onAction="#openOrdersForm" prefHeight="102.0" prefWidth="155.0" text="Orders" />
+      <Button layoutX="341.0" layoutY="222.0" mnemonicParsing="false" onAction="#openIncomeForm" prefHeight="110.0" prefWidth="155.0" text="Income" />
+      <Button layoutX="93.0" layoutY="226.0" mnemonicParsing="false" onAction="#openNewOrderForm" prefHeight="102.0" prefWidth="155.0" text="New Order" />
    </children>
 </AnchorPane>

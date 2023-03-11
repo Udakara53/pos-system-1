@@ -41,4 +41,19 @@ public class DashboardFormController {
         stage.centerOnScreen();
         new Alert(Alert.AlertType.WARNING,"Logged Out!").show();
     }
+
+    public void openCustomerForm(ActionEvent actionEvent) {
+    }
+
+    public void openItemForm(ActionEvent actionEvent) {
+    }
+
+    public void openOrdersForm(ActionEvent actionEvent) {
+    }
+
+    public void openIncomeForm(ActionEvent actionEvent) {
+    }
+
+    public void openNewOrderForm(ActionEvent actionEvent) {
+    }
 }
