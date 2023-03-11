@@ -17,6 +17,7 @@ public class DashboardFormController {
         stage.setScene(
                 new Scene(FXMLLoader.load(getClass().getResource("../view/LoginForm.fxml")))
         );
+        stage.centerOnScreen();
         new Alert(Alert.AlertType.WARNING,"Logged Out!").show();
     }
 }

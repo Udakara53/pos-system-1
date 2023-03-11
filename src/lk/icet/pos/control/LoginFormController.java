@@ -34,11 +34,16 @@ public class LoginFormController {
                stage.setScene(
                        new Scene(FXMLLoader.load(getClass().getResource("../view/DashboardForm.fxml")))
                );
+               stage.centerOnScreen();
             } else {
                 System.out.println("wrong password");
             }
         } else {
             new Alert(Alert.AlertType.WARNING, "User not found!");
         }
+    }
+
+    public void loginEnterAction(ActionEvent actionEvent) throws IOException {
+        loginOnAction(actionEvent);
     }
 }
