@@ -21,7 +21,7 @@
             <Font name="System Bold" size="13.0" />
          </font>
       </Button>
-      <Button layoutX="564.0" layoutY="19.0" mnemonicParsing="false" text="+ New Customer" />
+      <Button layoutX="598.0" layoutY="19.0" mnemonicParsing="false" onAction="#newCustomerOnAction" text="+ New Customer" />
       <TextField fx:id="txtId" layoutX="14.0" layoutY="75.0" prefHeight="26.0" prefWidth="93.0" promptText="Id">
          <font>
             <Font size="14.0" />
@@ -43,13 +43,13 @@
          </font>
       </TextField>
       <Separator layoutX="14.0" layoutY="58.0" prefHeight="0.0" prefWidth="368.0" />
-      <Button fx:id="btn" layoutX="590.0" layoutY="118.0" mnemonicParsing="false" onAction="#saveCustomer" text="Save Customer" />
+      <Button fx:id="btn" layoutX="590.0" layoutY="118.0" mnemonicParsing="false" onAction="#saveCustomer" prefHeight="26.0" prefWidth="122.0" text="Save Customer" />
       <TextField layoutX="14.0" layoutY="116.0" prefHeight="30.0" prefWidth="562.0" promptText="search">
          <font>
             <Font size="14.0" />
          </font>
       </TextField>
-      <TableView fx:id="tbl" layoutX="14.0" layoutY="189.0" prefHeight="293.0" prefWidth="672.0">
+      <TableView fx:id="tbl" layoutX="14.0" layoutY="189.0" prefHeight="294.0" prefWidth="694.0">
         <columns>
           <TableColumn fx:id="colId" prefWidth="75.0" text="Id" />
           <TableColumn fx:id="colName" prefWidth="146.4000244140625" text="Name" />

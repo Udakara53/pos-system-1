@@ -14,6 +14,7 @@ import lk.icet.pos.entity.Customer;
 import lk.icet.pos.view.tm.CustomerTM;
 
 import java.io.IOException;
+import java.util.Optional;
 
 public class CustomerFormController {
     public AnchorPane customerFormContext;
@@ -79,8 +80,6 @@ public class CustomerFormController {
                 }
             }
         }
-
-
         clearData();
     }
 
@@ -96,9 +95,25 @@ public class CustomerFormController {
         for (Customer c: Database.customers){
             Button btn =new Button("Delete");
             CustomerTM tm = new CustomerTM(c.getId(), c.getName(), c.getAddress(), c.getSalary(), btn);
+
+            btn.setOnAction(e->{
+                Alert alert = new Alert(Alert.AlertType.CONFIRMATION,"Are You Sure",ButtonType.YES,ButtonType.NO);
+                Optional<ButtonType> type = alert.showAndWait();
+                if (type.get()==ButtonType.YES){
+                    Database.customers.remove(c);
+                    new Alert(Alert.AlertType.INFORMATION,"Customer Deleted!").show();
+                    loadAll("");
+                }
+            });
+
             tmList.add(tm);
         }
         tbl.setItems(tmList);
 
+    }
+
+    public void newCustomerOnAction(ActionEvent actionEvent) {
+        clearData();
+        btn.setText("Save Customer");
     }
 }
