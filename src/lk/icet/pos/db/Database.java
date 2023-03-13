@@ -1,5 +1,6 @@
 package lk.icet.pos.db;
 
+import lk.icet.pos.entity.Customer;
 import lk.icet.pos.entity.User;
 import org.mindrot.jbcrypt.BCrypt;
 
@@ -7,6 +8,7 @@ import java.util.ArrayList;
 
 public class Database {
     public static ArrayList<User> users = new ArrayList<>();
+    public static ArrayList<Customer> customers = new ArrayList();
 
     static{
         users.add(new User("tom",encryptPassword("1234")));
