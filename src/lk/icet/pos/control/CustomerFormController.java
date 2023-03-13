@@ -1,14 +1,17 @@
 package lk.icet.pos.control;
 
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
-import javafx.scene.control.Alert;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 import lk.icet.pos.db.Database;
 import lk.icet.pos.entity.Customer;
+import lk.icet.pos.view.tm.CustomerTM;
 
 import java.io.IOException;
 
@@ -18,6 +21,21 @@ public class CustomerFormController {
     public TextField txtName;
     public TextField txtAddress;
     public TextField txtSalary;
+    public TableView<CustomerTM> tbl;
+    public TableColumn colId;
+    public TableColumn colName;
+    public TableColumn colAddress;
+    public TableColumn colSalary;
+    public TableColumn colOption;
+
+    public void initialize(){
+        colId.setCellValueFactory(new PropertyValueFactory<>("id"));
+        colName.setCellValueFactory(new PropertyValueFactory<>("name"));
+        colAddress.setCellValueFactory(new PropertyValueFactory<>("address"));
+        colSalary.setCellValueFactory(new PropertyValueFactory<>("salary"));
+        colOption.setCellValueFactory(new PropertyValueFactory<>("btn"));
+    }
+
 
     public void backToHomeOnAction(ActionEvent actionEvent) throws IOException {
         Stage stage = (Stage) customerFormContext.getScene().getWindow();
@@ -32,6 +50,7 @@ public class CustomerFormController {
         );
         Database.customers.add(c1);
         new Alert(Alert.AlertType.INFORMATION,"Customer Saved!").show();
+        loadAll("");
         clearData();
     }
 
@@ -40,5 +59,15 @@ public class CustomerFormController {
         txtId.clear();
         txtName.clear();
         txtSalary.clear();
+    }
+    private void loadAll(String searchText){
+        ObservableList<CustomerTM> tmList = FXCollections.observableArrayList();
+        Button btn =new Button("Delete");
+        for (Customer c: Database.customers){
+            CustomerTM tm = new CustomerTM(c.getId(), c.getName(), c.getAddress(), c.getSalary(), btn);
+            tmList.add(tm);
+        }
+        tbl.setItems(tmList);
+
     }
 }
