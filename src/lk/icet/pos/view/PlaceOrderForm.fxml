@@ -31,14 +31,14 @@
       <TextField fx:id="txtRequestQty" layoutX="638.0" layoutY="133.0" prefHeight="26.0" prefWidth="97.0" promptText="RequestOnHand" />
       <Button layoutX="659.0" layoutY="173.0" mnemonicParsing="false" onAction="#addToCartOnAction" prefHeight="26.0" prefWidth="82.0" text="Add To Cart" />
       <Button layoutX="553.0" layoutY="173.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="89.0" text="Remove Cart" />
-      <TableView layoutX="14.0" layoutY="229.0" prefHeight="200.0" prefWidth="721.0">
+      <TableView fx:id="tblCart" layoutX="14.0" layoutY="229.0" prefHeight="200.0" prefWidth="721.0">
         <columns>
-          <TableColumn prefWidth="112.00002479553223" text="Item Code" />
-          <TableColumn prefWidth="147.199951171875" text="Description" />
-            <TableColumn prefWidth="114.39996337890625" text="Unit Price" />
-            <TableColumn prefWidth="119.20001220703125" text="QTY" />
-            <TableColumn prefWidth="102.4000244140625" text="Total" />
-            <TableColumn prefWidth="84.7999267578125" text="Option" />
+          <TableColumn fx:id="colItemCode" prefWidth="112.00002479553223" text="Item Code" />
+          <TableColumn fx:id="colDescription" prefWidth="147.199951171875" text="Description" />
+            <TableColumn fx:id="colUnitPrice" prefWidth="114.39996337890625" text="Unit Price" />
+            <TableColumn fx:id="colQty" prefWidth="119.20001220703125" text="QTY" />
+            <TableColumn fx:id="colTotal" prefWidth="102.4000244140625" text="Total" />
+            <TableColumn fx:id="colOption" prefWidth="123.19997558593752" text="Option" />
         </columns>
       </TableView>
       <Label layoutX="22.0" layoutY="448.0" text="Total :">

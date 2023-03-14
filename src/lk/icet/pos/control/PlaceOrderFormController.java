@@ -1,12 +1,13 @@
 package lk.icet.pos.control;
 
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
-import javafx.scene.control.Alert;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import lk.icet.pos.db.Database;
 import lk.icet.pos.entity.Customer;
 import lk.icet.pos.entity.Item;
+import lk.icet.pos.view.tm.CartTM;
 
 public class PlaceOrderFormController {
     public ComboBox cmbCustomerId;
@@ -18,6 +19,13 @@ public class PlaceOrderFormController {
     public TextField txtQtyOnHand;
     public ComboBox<String> cmbItemCode;
     public TextField txtRequestQty;
+    public TableView tblCart;
+    public TableColumn colItemCode;
+    public TableColumn colDescription;
+    public TableColumn colUnitPrice;
+    public TableColumn colQty;
+    public TableColumn colTotal;
+    public TableColumn colOption;
 
     public void initialize(){
         loadCustomerIds();
@@ -74,5 +82,12 @@ public class PlaceOrderFormController {
         double unitPrice = Double.parseDouble(txtUnitPrice.getText());
         int qty = Integer.parseInt(txtRequestQty.getText());
         double total = unitPrice*qty;
+
+        Button btn = new Button();
+        CartTM tm = new CartTM(cmbItemCode.getValue(),txtDescription.getText(),unitPrice,qty,total,btn);
+
+        ObservableList<CartTM> tmList = FXCollections.observableArrayList();
+        tmList.add(tm);
+        tblCart.setItems(tmList);
     }
 }
