@@ -10,6 +10,8 @@ import lk.icet.pos.entity.Customer;
 import lk.icet.pos.entity.Item;
 import lk.icet.pos.view.tm.CartTM;
 
+import java.util.Optional;
+
 public class PlaceOrderFormController {
     public ComboBox cmbCustomerId;
     public TextField txtCustomerName;
@@ -90,9 +92,26 @@ public class PlaceOrderFormController {
         int qty = Integer.parseInt(txtRequestQty.getText());
         double total = unitPrice*qty;
 
-        Button btn = new Button("Delete");
-        CartTM tm = new CartTM(cmbItemCode.getValue(),txtDescription.getText(),unitPrice,qty,total,btn);
-        tmList.add(tm);
+        if(isExists(cmbItemCode.getValue())){
+            for (CartTM t:tmList
+                 ) {
+                if (t.getCode().equals(cmbItemCode.getValue())){
+                    t.setQty(t.getQty()+qty);
+                    t.setTotal(t.getTotal()+total);
+                    tblCart.refresh();
+                }
+            }
+        }else{
+            Button btn = new Button("Delete");
+            CartTM tm = new CartTM(cmbItemCode.getValue(),txtDescription.getText(),unitPrice,qty,total,btn);
+            tmList.add(tm);
+        }
         tblCart.setItems(tmList);
+
+    }
+
+    private boolean isExists(String code){
+        Optional<CartTM> selectedCartTm = tmList.stream().filter(e -> e.getCode().equals(code)).findFirst();
+        return selectedCartTm.isPresent();
     }
 }
