@@ -4,6 +4,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.scene.control.*;
+import javafx.scene.control.cell.PropertyValueFactory;
 import lk.icet.pos.db.Database;
 import lk.icet.pos.entity.Customer;
 import lk.icet.pos.entity.Item;
@@ -28,6 +29,12 @@ public class PlaceOrderFormController {
     public TableColumn colOption;
 
     public void initialize(){
+        colItemCode.setCellValueFactory(new PropertyValueFactory<>("code"));
+        colDescription.setCellValueFactory(new PropertyValueFactory<>("description"));
+        colUnitPrice.setCellValueFactory(new PropertyValueFactory<>("unitPrice"));
+        colQty.setCellValueFactory(new PropertyValueFactory<>("qty"));
+        colTotal.setCellValueFactory(new PropertyValueFactory<>("total"));
+        colOption.setCellValueFactory(new PropertyValueFactory<>("btn"));
         loadCustomerIds();
         loadItemCodes();
         cmbCustomerId.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
@@ -77,16 +84,14 @@ public class PlaceOrderFormController {
             cmbCustomerId.getItems().add(data.getId());
         }
     }
-
+    ObservableList<CartTM> tmList = FXCollections.observableArrayList();
     public void addToCartOnAction(ActionEvent actionEvent) {
         double unitPrice = Double.parseDouble(txtUnitPrice.getText());
         int qty = Integer.parseInt(txtRequestQty.getText());
         double total = unitPrice*qty;
 
-        Button btn = new Button();
+        Button btn = new Button("Delete");
         CartTM tm = new CartTM(cmbItemCode.getValue(),txtDescription.getText(),unitPrice,qty,total,btn);
-
-        ObservableList<CartTM> tmList = FXCollections.observableArrayList();
         tmList.add(tm);
         tblCart.setItems(tmList);
     }
