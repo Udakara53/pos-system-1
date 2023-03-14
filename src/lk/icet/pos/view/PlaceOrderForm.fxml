@@ -10,14 +10,14 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="583.0" prefWidth="864.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="lk.icet.pos.control.PlaceOrderFormController">
+<AnchorPane fx:id="context" prefHeight="583.0" prefWidth="864.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="lk.icet.pos.control.PlaceOrderFormController">
    <children>
       <Label layoutX="170.0" layoutY="9.0" text="Place Order Form">
          <font>
             <Font size="18.0" />
          </font>
       </Label>
-      <Button layoutX="14.0" layoutY="10.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="134.0" text="Back to home" />
+      <Button layoutX="14.0" layoutY="10.0" mnemonicParsing="false" onAction="#backToHomeOnAction" prefHeight="26.0" prefWidth="134.0" text="Back to home" />
       <ComboBox fx:id="cmbCustomerId" layoutX="14.0" layoutY="69.0" prefHeight="26.0" prefWidth="148.0" promptText="Customer id" />
       <Separator layoutX="22.0" layoutY="45.0" prefHeight="1.0" prefWidth="615.0" />
       <TextField fx:id="txtCustomerName" disable="true" editable="false" layoutX="192.0" layoutY="69.0" prefHeight="26.0" prefWidth="177.0" promptText="Name" style="-fx-background-color: white;" />

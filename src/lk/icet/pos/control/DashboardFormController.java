@@ -45,13 +45,15 @@ public class DashboardFormController {
     public void openItemForm(ActionEvent actionEvent) {
     }
 
-    public void openOrdersForm(ActionEvent actionEvent) {
+    public void openOrdersForm(ActionEvent actionEvent) throws IOException {
+
     }
 
     public void openIncomeForm(ActionEvent actionEvent) {
     }
 
-    public void openNewOrderForm(ActionEvent actionEvent) {
+    public void openNewOrderForm(ActionEvent actionEvent) throws IOException {
+        setUi("PlaceOrderForm");
     }
     private void setUi(String form) throws IOException {
         Stage stage = (Stage) dashboardContext.getScene().getWindow();

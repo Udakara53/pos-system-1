@@ -42,6 +42,7 @@ public class CustomerFormController {
                 setData(newValue);
             }
         });
+        loadAll("");
     }
 
     private void setData(CustomerTM newValue) {

@@ -3,13 +3,18 @@ package lk.icet.pos.control;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.layout.AnchorPane;
+import javafx.stage.Stage;
 import lk.icet.pos.db.Database;
 import lk.icet.pos.entity.Customer;
 import lk.icet.pos.entity.Item;
 import lk.icet.pos.view.tm.CartTM;
 
+import java.io.IOException;
 import java.util.Optional;
 
 public class PlaceOrderFormController {
@@ -30,6 +35,7 @@ public class PlaceOrderFormController {
     public TableColumn colTotal;
     public TableColumn colOption;
     public Label lblTotal;
+    public AnchorPane context;
 
     public void initialize(){
         colItemCode.setCellValueFactory(new PropertyValueFactory<>("code"));
@@ -137,5 +143,11 @@ public class PlaceOrderFormController {
         txtUnitPrice.clear();
         txtQtyOnHand.clear();
         txtRequestQty.clear();
+    }
+
+    public void backToHomeOnAction(ActionEvent actionEvent) throws IOException {
+        Stage stage = (Stage) context.getScene().getWindow();
+        stage.setScene(new Scene(FXMLLoader.load(getClass().getResource("../view/DashboardForm.fxml"))));
+
     }
 }
