@@ -29,6 +29,7 @@ public class PlaceOrderFormController {
     public TableColumn colQty;
     public TableColumn colTotal;
     public TableColumn colOption;
+    public Label lblTotal;
 
     public void initialize(){
         colItemCode.setCellValueFactory(new PropertyValueFactory<>("code"));
@@ -104,14 +105,37 @@ public class PlaceOrderFormController {
         }else{
             Button btn = new Button("Delete");
             CartTM tm = new CartTM(cmbItemCode.getValue(),txtDescription.getText(),unitPrice,qty,total,btn);
+            btn.setOnAction(e->{
+                tmList.remove(tm);
+                calculateTotal();
+                tblCart.refresh();
+            });
             tmList.add(tm);
         }
+        clear();
         tblCart.setItems(tmList);
+        calculateTotal();
 
+    }
+
+    private void calculateTotal() {
+        double total=0;
+        for (CartTM tm:tmList){
+            total+=tm.getTotal();
+        }
+        lblTotal.setText(String.valueOf(total));
     }
 
     private boolean isExists(String code){
         Optional<CartTM> selectedCartTm = tmList.stream().filter(e -> e.getCode().equals(code)).findFirst();
         return selectedCartTm.isPresent();
+    }
+    private void clear(){
+        cmbItemCode.setValue(null);
+        txtDescription.clear();
+        txtDescription.clear();
+        txtUnitPrice.clear();
+        txtQtyOnHand.clear();
+        txtRequestQty.clear();
     }
 }
