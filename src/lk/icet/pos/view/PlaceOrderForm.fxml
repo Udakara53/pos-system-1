@@ -10,7 +10,7 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane fx:id="context" prefHeight="583.0" prefWidth="864.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="lk.icet.pos.control.PlaceOrderFormController">
+<AnchorPane fx:id="context" prefHeight="583.0" prefWidth="864.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="lk.icet.pos.control.PlaceOrderFormController">
    <children>
       <Label layoutX="170.0" layoutY="9.0" text="Place Order Form">
          <font>
@@ -37,8 +37,8 @@
           <TableColumn fx:id="colDescription" prefWidth="147.199951171875" text="Description" />
             <TableColumn fx:id="colUnitPrice" prefWidth="114.39996337890625" text="Unit Price" />
             <TableColumn fx:id="colQty" prefWidth="119.20001220703125" text="QTY" />
-            <TableColumn fx:id="colTotal" prefWidth="102.4000244140625" text="Total" />
-            <TableColumn fx:id="colOption" prefWidth="123.19997558593752" text="Option" />
+            <TableColumn fx:id="colTotal" prefWidth="186.0" text="Total" />
+            <TableColumn fx:id="colOption" prefWidth="149.0" text="Option" />
         </columns>
       </TableView>
       <Label layoutX="24.0" layoutY="531.0" text="Total :">
@@ -51,6 +51,6 @@
             <Font size="14.0" />
          </font>
       </Label>
-      <Button layoutX="683.0" layoutY="528.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="115.0" text="Place Order" />
+      <Button layoutX="685.0" layoutY="526.0" mnemonicParsing="false" onAction="#saveOrder" prefHeight="26.0" prefWidth="115.0" text="Place Order" />
    </children>
 </AnchorPane>

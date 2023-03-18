@@ -12,9 +12,13 @@ import javafx.stage.Stage;
 import lk.icet.pos.db.Database;
 import lk.icet.pos.entity.Customer;
 import lk.icet.pos.entity.Item;
+import lk.icet.pos.entity.Order;
+import lk.icet.pos.entity.OrderDetails;
 import lk.icet.pos.view.tm.CartTM;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.Optional;
 
 public class PlaceOrderFormController {
@@ -95,33 +99,57 @@ public class PlaceOrderFormController {
     }
     ObservableList<CartTM> tmList = FXCollections.observableArrayList();
     public void addToCartOnAction(ActionEvent actionEvent) {
-        double unitPrice = Double.parseDouble(txtUnitPrice.getText());
-        int qty = Integer.parseInt(txtRequestQty.getText());
-        double total = unitPrice*qty;
+        if(isStockExists()){
+            double unitPrice = Double.parseDouble(txtUnitPrice.getText());
+            int qty = Integer.parseInt(txtRequestQty.getText());
+            double total = unitPrice*qty;
 
-        if(isExists(cmbItemCode.getValue())){
-            for (CartTM t:tmList
-                 ) {
-                if (t.getCode().equals(cmbItemCode.getValue())){
-                    t.setQty(t.getQty()+qty);
-                    t.setTotal(t.getTotal()+total);
-                    tblCart.refresh();
+
+            if(isExists(cmbItemCode.getValue())){
+                for (CartTM t:tmList
+                ) {
+                    if (t.getCode().equals(cmbItemCode.getValue())){
+                        t.setQty(t.getQty()+qty);
+                        t.setTotal(t.getTotal()+total);
+                        manageQty(t.getCode(),qty);
+                        tblCart.refresh();
+                    }
                 }
-            }
-        }else{
-            Button btn = new Button("Delete");
-            CartTM tm = new CartTM(cmbItemCode.getValue(),txtDescription.getText(),unitPrice,qty,total,btn);
-            btn.setOnAction(e->{
-                tmList.remove(tm);
-                calculateTotal();
-                tblCart.refresh();
-            });
-            tmList.add(tm);
-        }
-        clear();
-        tblCart.setItems(tmList);
-        calculateTotal();
+            }else{
+                Button btn = new Button("Delete");
+                CartTM tm = new CartTM(cmbItemCode.getValue(),txtDescription.getText(),unitPrice,qty,total,btn);
+                btn.setOnAction(e->{
+                    returnItemToStock(tm.getCode(),tm.getQty());
+                    tmList.remove(tm);
 
+                    calculateTotal();
+
+                    tblCart.refresh();
+                });
+                tmList.add(tm);
+                manageQty(tm.getCode(),tm.getQty());
+            }
+
+            clear();
+            tblCart.setItems(tmList);
+            calculateTotal();
+        }else{
+            new Alert(Alert.AlertType.WARNING,String.format("Sorry %s %s is out of stock!",cmbItemCode.getValue(),txtDescription.getText())).show();
+        }
+    }
+
+    private void returnItemToStock(String code, int qty) {
+        for (Item i:Database.items){
+            if (i.getCode().equals(code)){
+                i.setQtyOnHand(i.getQtyOnHand()+qty);
+                return;
+            }
+        }
+    }
+
+
+    private boolean isStockExists() {
+        return Double.parseDouble(txtQtyOnHand.getText())>=Double.parseDouble(txtRequestQty.getText());
     }
 
     private void calculateTotal() {
@@ -148,6 +176,29 @@ public class PlaceOrderFormController {
     public void backToHomeOnAction(ActionEvent actionEvent) throws IOException {
         Stage stage = (Stage) context.getScene().getWindow();
         stage.setScene(new Scene(FXMLLoader.load(getClass().getResource("../view/DashboardForm.fxml"))));
+    }
 
+    public void saveOrder(ActionEvent actionEvent) {
+        ArrayList<OrderDetails> products = new ArrayList<>();
+        for (CartTM tm:tmList){
+            products.add(new OrderDetails(tm.getCode(),tm.getUnitPrice(),tm.getQty()));
+            //manageQty(tm.getCode(),tm.getQty());
+        }
+        Order order = new Order("0-1", (String) cmbCustomerId.getValue(),new Date(),
+                Double.parseDouble(lblTotal.getText()),products);
+        Database.orders.add(order);
+        new Alert(Alert.AlertType.INFORMATION,"Order Completed!").show();
+        tmList.clear();
+        tblCart.refresh();
+        lblTotal.setText(String.valueOf(0));
+    }
+
+    private void manageQty(String code,int qty) {
+        for (Item i:Database.items){
+            if (i.getCode().equals(code)){
+                i.setQtyOnHand(i.getQtyOnHand()-qty);
+                return;
+            }
+        }
     }
 }

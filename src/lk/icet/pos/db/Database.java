@@ -1,8 +1,6 @@
 package lk.icet.pos.db;
 
-import lk.icet.pos.entity.Customer;
-import lk.icet.pos.entity.Item;
-import lk.icet.pos.entity.User;
+import lk.icet.pos.entity.*;
 import org.mindrot.jbcrypt.BCrypt;
 
 import java.util.ArrayList;
@@ -13,6 +11,10 @@ public class Database {
     public static ArrayList<Customer> customers = new ArrayList();
 
     public static ArrayList<Item> items =new ArrayList();
+
+    public static ArrayList<Order> orders = new ArrayList();
+
+
 
     static{
         users.add(new User("tom",encryptPassword("1234")));
