@@ -195,7 +195,6 @@ public class PlaceOrderFormController {
     }
 
     public void saveOrder(ActionEvent actionEvent) {
-
          ArrayList<OrderDetails> products = new ArrayList<>();
             for (CartTM tm:tmList){
                 products.add(new OrderDetails(tm.getCode(),tm.getUnitPrice(),tm.getQty()));
