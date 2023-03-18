@@ -46,7 +46,7 @@ public class DashboardFormController {
     }
 
     public void openOrdersForm(ActionEvent actionEvent) throws IOException {
-
+        setUi("OrderForm");
     }
 
     public void openIncomeForm(ActionEvent actionEvent) {
