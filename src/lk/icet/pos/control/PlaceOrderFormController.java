@@ -40,6 +40,7 @@ public class PlaceOrderFormController {
     public TableColumn colOption;
     public Label lblTotal;
     public AnchorPane context;
+    public Label lblOrderId;
 
     public void initialize(){
         colItemCode.setCellValueFactory(new PropertyValueFactory<>("code"));
@@ -50,6 +51,7 @@ public class PlaceOrderFormController {
         colOption.setCellValueFactory(new PropertyValueFactory<>("btn"));
         loadCustomerIds();
         loadItemCodes();
+        loadOrderIds();
         cmbCustomerId.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
             if (newValue!=null){
                 setCustomerData((String) newValue);
@@ -60,6 +62,20 @@ public class PlaceOrderFormController {
                 setItemData((String) newValue);
             }
         });
+
+    }
+
+    private void loadOrderIds() {
+        if (Database.orders.size()>0){
+            Order order = Database.orders.get(Database.orders.size() - 1);
+            String selectedOrderId= order.getOrderId();
+            String splitedId = selectedOrderId.split("[A-Z]")[1];
+            int i = Integer.parseInt(splitedId);
+            i++;
+            lblOrderId.setText(" D"+i);
+        }else{
+            lblOrderId.setText(" D1");
+        }
 
     }
 
@@ -99,6 +115,7 @@ public class PlaceOrderFormController {
     }
     ObservableList<CartTM> tmList = FXCollections.observableArrayList();
     public void addToCartOnAction(ActionEvent actionEvent) {
+
         if(isStockExists()){
             double unitPrice = Double.parseDouble(txtUnitPrice.getText());
             int qty = Integer.parseInt(txtRequestQty.getText());
@@ -129,7 +146,6 @@ public class PlaceOrderFormController {
                 tmList.add(tm);
                 manageQty(tm.getCode(),tm.getQty());
             }
-
             clear();
             tblCart.setItems(tmList);
             calculateTotal();
@@ -179,18 +195,20 @@ public class PlaceOrderFormController {
     }
 
     public void saveOrder(ActionEvent actionEvent) {
-        ArrayList<OrderDetails> products = new ArrayList<>();
-        for (CartTM tm:tmList){
-            products.add(new OrderDetails(tm.getCode(),tm.getUnitPrice(),tm.getQty()));
-            //manageQty(tm.getCode(),tm.getQty());
-        }
-        Order order = new Order("0-1", (String) cmbCustomerId.getValue(),new Date(),
-                Double.parseDouble(lblTotal.getText()),products);
-        Database.orders.add(order);
-        new Alert(Alert.AlertType.INFORMATION,"Order Completed!").show();
-        tmList.clear();
-        tblCart.refresh();
-        lblTotal.setText(String.valueOf(0));
+
+         ArrayList<OrderDetails> products = new ArrayList<>();
+            for (CartTM tm:tmList){
+                products.add(new OrderDetails(tm.getCode(),tm.getUnitPrice(),tm.getQty()));
+                //manageQty(tm.getCode(),tm.getQty());
+            }
+            Order order = new Order(lblOrderId.getText(), (String) cmbCustomerId.getValue(),new Date(),
+                    Double.parseDouble(lblTotal.getText()),products);
+            Database.orders.add(order);
+            new Alert(Alert.AlertType.INFORMATION,"Order Completed!").show();
+            tmList.clear();
+            tblCart.refresh();
+            lblTotal.setText(String.valueOf(0));
+            loadOrderIds();
     }
 
     private void manageQty(String code,int qty) {
