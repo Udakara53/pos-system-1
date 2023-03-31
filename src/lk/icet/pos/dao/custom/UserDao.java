@@ -4,5 +4,8 @@ import lk.icet.pos.dao.CrudDao;
 import lk.icet.pos.entity.Item;
 import lk.icet.pos.entity.User;
 
+import java.sql.SQLException;
+
 public interface UserDao extends CrudDao<User,String> {
+    public void initializeUsers() throws SQLException, ClassNotFoundException;
 }
