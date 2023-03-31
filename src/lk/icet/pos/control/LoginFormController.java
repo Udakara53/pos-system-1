@@ -8,12 +8,14 @@ import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
+import lk.icet.pos.dao.DataAccessCode;
 import lk.icet.pos.db.Database;
 import lk.icet.pos.entity.User;
 import org.mindrot.jbcrypt.BCrypt;
 
 import javax.xml.crypto.Data;
 import java.io.IOException;
+import java.sql.SQLException;
 
 public class LoginFormController {
     public AnchorPane loginFormContext;
@@ -25,21 +27,25 @@ public class LoginFormController {
     }
 
     public void loginOnAction(ActionEvent actionEvent) throws IOException {
-        User selectedUser = Database.users.stream().filter(user -> user.getUsername().equals(txtUserName.getText()))
-                .findFirst().orElse(null);
-        if (selectedUser != null) {
-            if (BCrypt.checkpw(pwd.getText(), selectedUser.getPassword())) {
-                //System.out.println("user logged");
-               Stage stage = (Stage) loginFormContext.getScene().getWindow();
-               stage.setScene(
-                       new Scene(FXMLLoader.load(getClass().getResource("../view/DashboardForm.fxml")))
-               );
-               stage.centerOnScreen();
+        try {
+            User selectedUser = new DataAccessCode().findUser(txtUserName.getText());
+            if (selectedUser != null) {
+                if (BCrypt.checkpw(pwd.getText(), selectedUser.getPassword())) {
+                    //System.out.println("user logged");
+                    Stage stage = (Stage) loginFormContext.getScene().getWindow();
+                    stage.setScene(
+                            new Scene(FXMLLoader.load(getClass().getResource("../view/DashboardForm.fxml")))
+                    );
+                    stage.centerOnScreen();
+                } else {
+                    System.out.println("wrong password");
+                }
             } else {
-                System.out.println("wrong password");
+                new Alert(Alert.AlertType.WARNING, "User not found!").show();
             }
-        } else {
-            new Alert(Alert.AlertType.WARNING, "User not found!");
+        }catch(SQLException|ClassNotFoundException e){
+            e.printStackTrace();
+            new Alert(Alert.AlertType.ERROR,e.getMessage()).show();
         }
     }
 
