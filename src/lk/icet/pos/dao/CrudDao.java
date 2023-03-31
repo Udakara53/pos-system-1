@@ -2,7 +2,7 @@ package lk.icet.pos.dao;
 
 import java.util.List;
 
-public interface CrudDao<ID,T> extends SuperDao{
+public interface CrudDao<T,ID> extends SuperDao{
      public boolean save(T t) throws Exception;
 
      public boolean update(T t) throws Exception;
