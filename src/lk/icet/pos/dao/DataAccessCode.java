@@ -37,7 +37,7 @@ public class DataAccessCode {
        return CrudUtil.execute("DELETE FROM customer WHERE id=?",id);
 
     }
-    public List<Customer> allCustomer(Customer c) throws ClassNotFoundException, SQLException {
+    public List<Customer> allCustomer() throws ClassNotFoundException, SQLException {
         ResultSet resultSet = CrudUtil.execute("SELECT*FROM customer");
         ArrayList<Customer> customerArrayList=new ArrayList<>();
         while (resultSet.next()){

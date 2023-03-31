@@ -13,7 +13,6 @@ import lk.icet.pos.dao.DataAccessCode;
 import lk.icet.pos.db.Database;
 import lk.icet.pos.entity.Customer;
 import lk.icet.pos.view.tm.CustomerTM;
-
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.Optional;
@@ -75,28 +74,25 @@ public class CustomerFormController {
                 }else{
                     new Alert(Alert.AlertType.WARNING,"Something went wrong").show();
                 }
-
             } catch (ClassNotFoundException |SQLException e) {
                 e.printStackTrace();
                 new Alert(Alert.AlertType.WARNING,e.getMessage()).show();
             }
-
-
         }else{
-            for(Customer c: Database.customers){
-                if (c.getId().equals(txtId.getText())){
-                    c.setName(c1.getName());
-                    c.setAddress(c1.getAddress());
-                    c.setSalary(c1.getSalary());
+            try {
+                if (new DataAccessCode().updateCustomer(c1)){
                     new Alert(Alert.AlertType.INFORMATION,"Customer Updated!").show();
                     loadAll("");
-                    btn.setText("Save Customer");
+                }else{
+                    new Alert(Alert.AlertType.WARNING,"Something went wrong").show();
                 }
+            }catch(SQLException | ClassNotFoundException e){
+                e.printStackTrace();
+                new Alert(Alert.AlertType.WARNING,"Something went wrong").show();
             }
         }
         clearData();
     }
-
     private void clearData() {
         txtAddress.clear();
         txtId.clear();
@@ -105,27 +101,36 @@ public class CustomerFormController {
     }
     private void loadAll(String searchText){
         ObservableList<CustomerTM> tmList = FXCollections.observableArrayList();
+        try {
+            for (Customer c : new DataAccessCode().allCustomer()) {
+                Button btn = new Button("Delete");
+                CustomerTM tm = new CustomerTM(c.getId(), c.getName(), c.getAddress(), c.getSalary(), btn);
 
-        for (Customer c: Database.customers){
-            Button btn =new Button("Delete");
-            CustomerTM tm = new CustomerTM(c.getId(), c.getName(), c.getAddress(), c.getSalary(), btn);
-
-            btn.setOnAction(e->{
-                Alert alert = new Alert(Alert.AlertType.CONFIRMATION,"Are You Sure",ButtonType.YES,ButtonType.NO);
-                Optional<ButtonType> type = alert.showAndWait();
-                if (type.get()==ButtonType.YES){
-                    Database.customers.remove(c);
-                    new Alert(Alert.AlertType.INFORMATION,"Customer Deleted!").show();
-                    loadAll("");
-                }
-            });
-
-            tmList.add(tm);
+                btn.setOnAction(e -> {
+                    Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "Are You Sure", ButtonType.YES, ButtonType.NO);
+                    Optional<ButtonType> type = alert.showAndWait();
+                    if (type.get() == ButtonType.YES) {
+                        try{
+                            if(new DataAccessCode().deleteCustomer(c.getId())){
+                                new Alert(Alert.AlertType.INFORMATION,"Customer Deleted!").show();
+                                loadAll("");
+                            }else{
+                                new Alert(Alert.AlertType.WARNING,"Something went wrong").show();
+                            }
+                        }catch(SQLException | ClassNotFoundException ex){
+                            ex.printStackTrace();
+                            new Alert(Alert.AlertType.WARNING,ex.getMessage()).show();
+                        }
+                    }
+                });
+                tmList.add(tm);
+            }
+            tbl.setItems(tmList);
+        }catch (SQLException | ClassNotFoundException e){
+            e.printStackTrace();
+            new Alert(Alert.AlertType.WARNING,e.getMessage()).show();
         }
-        tbl.setItems(tmList);
-
     }
-
     public void newCustomerOnAction(ActionEvent actionEvent) {
         clearData();
         btn.setText("Save Customer");
