@@ -1,19 +1,21 @@
-package lk.icet.pos.entity;
+package lk.icet.pos.dto;
+
+import lk.icet.pos.entity.OrderDetails;
 
 import java.util.ArrayList;
 import java.util.Date;
 
-public class Order {
+public class OrderDto {
     private String orderId;
     private String customer;
     private Date date;
     private double total;
 
 
-    public Order() {
+    public OrderDto() {
     }
 
-    public Order(String orderId, String customer, Date date, double total) {
+    public OrderDto(String orderId, String customer, Date date, double total) {
         this.orderId = orderId;
         this.customer = customer;
         this.date = date;

@@ -1,19 +1,28 @@
-package lk.icet.pos.entity;
+package lk.icet.pos.dto;
 
-public class OrderDetails {
+public class OrderDetailsDto {
     private String code;
 
     private String orderId;
     private double unitPrice;
     private int qty;
 
-    public OrderDetails(String code, String orderId, double unitPrice,int qty) {
+    public OrderDetailsDto(String code, String orderId, double unitPrice, int qty) {
         this.code = code;
         this.orderId = orderId;
         this.unitPrice = unitPrice;
         this.qty = qty;
     }
-    public OrderDetails() {
+
+    public OrderDetailsDto() {
+    }
+
+    public String getCode() {
+        return code;
+    }
+
+    public void setCode(String code) {
+        this.code = code;
     }
 
     public String getOrderId() {
@@ -22,16 +31,6 @@ public class OrderDetails {
 
     public void setOrderId(String orderId) {
         this.orderId = orderId;
-    }
-
-
-
-    public String getCode() {
-        return code;
-    }
-
-    public void setCode(String code) {
-        this.code = code;
     }
 
     public double getUnitPrice() {

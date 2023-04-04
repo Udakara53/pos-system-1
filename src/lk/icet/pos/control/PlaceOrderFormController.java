@@ -197,11 +197,11 @@ public class PlaceOrderFormController {
     public void saveOrder(ActionEvent actionEvent) {
          ArrayList<OrderDetails> products = new ArrayList<>();
             for (CartTM tm:tmList){
-                products.add(new OrderDetails(tm.getCode(),tm.getUnitPrice(),tm.getQty()));
+                products.add(new OrderDetails(tm.getCode(),"",tm.getUnitPrice(),tm.getQty()));
                 //manageQty(tm.getCode(),tm.getQty());
             }
             Order order = new Order(lblOrderId.getText(), (String) cmbCustomerId.getValue(),new Date(),
-                    Double.parseDouble(lblTotal.getText()),products);
+                    Double.parseDouble(lblTotal.getText()));
             Database.orders.add(order);
             new Alert(Alert.AlertType.INFORMATION,"Order Completed!").show();
             tmList.clear();
