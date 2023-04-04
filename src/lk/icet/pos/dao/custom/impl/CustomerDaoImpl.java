@@ -5,6 +5,7 @@ import lk.icet.pos.dao.custom.CustomerDao;
 import lk.icet.pos.entity.Customer;
 
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -55,5 +56,14 @@ public class CustomerDaoImpl implements CustomerDao {
                     resultSet.getDouble(4)
             ));
         }return customerArrayList;
+    }
+
+    @Override
+    public List<String> loadCustomerIds() throws SQLException, ClassNotFoundException {
+        ResultSet set = CrudUtil.execute("SELECT id FROM customer");
+        List<String> list = new ArrayList<>();
+        while (set.next()){
+            list.add(set.getString(1));
+        }return list;
     }
 }

@@ -7,6 +7,8 @@ import lk.icet.pos.dto.OrderDto;
 import lk.icet.pos.entity.Order;
 import lk.icet.pos.enums.DaoType;
 
+import java.sql.SQLException;
+
 public class OrderBoImpl implements OrderBo {
 
     private OrderDao orderDao = DaoFactory.getInstance().getDao(DaoType.ORDER);
@@ -16,5 +18,10 @@ public class OrderBoImpl implements OrderBo {
         return orderDao.save(
                 new Order(dto.getOrderId(), dto.getCustomer(), dto.getDate(), dto.getTotal())
         );
+    }
+
+    @Override
+    public String generateOrderId() throws SQLException, ClassNotFoundException {
+        return orderDao.generateOrderId();
     }
 }

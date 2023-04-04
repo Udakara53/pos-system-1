@@ -6,6 +6,7 @@ import lk.icet.pos.dao.custom.ItemDao;
 import lk.icet.pos.entity.Item;
 
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -47,5 +48,14 @@ public class ItemDaoImpl implements ItemDao {
                     resultItem.getDouble(4)
             ));
         }return itemList;
+    }
+
+    @Override
+    public List<String> loadItemCodes() throws SQLException, ClassNotFoundException {
+        ResultSet set = CrudUtil.execute("SELECT code FROM item");
+        List<String> list = new ArrayList<>();
+        while (set.next()){
+            list.add(set.getString(1));
+        }return list;
     }
 }

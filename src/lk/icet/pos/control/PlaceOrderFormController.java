@@ -9,14 +9,20 @@ import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
+import lk.icet.pos.bo.BoFactory;
+import lk.icet.pos.bo.custom.CustomerBo;
+import lk.icet.pos.bo.custom.ItemBo;
+import lk.icet.pos.bo.custom.OrderBo;
 import lk.icet.pos.db.Database;
 import lk.icet.pos.entity.Customer;
 import lk.icet.pos.entity.Item;
 import lk.icet.pos.entity.Order;
 import lk.icet.pos.entity.OrderDetails;
+import lk.icet.pos.enums.BOType;
 import lk.icet.pos.view.tm.CartTM;
 
 import java.io.IOException;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Optional;
@@ -42,6 +48,12 @@ public class PlaceOrderFormController {
     public AnchorPane context;
     public Label lblOrderId;
 
+    private CustomerBo customerBo = BoFactory.getInstance().getBo(BOType.CUSTOMER);
+
+    private ItemBo itemBo = BoFactory.getInstance().getBo(BOType.ITEM);
+
+    private OrderBo orderBo = BoFactory.getInstance().getBo(BOType.ORDER);
+
     public void initialize(){
         colItemCode.setCellValueFactory(new PropertyValueFactory<>("code"));
         colDescription.setCellValueFactory(new PropertyValueFactory<>("description"));
@@ -52,6 +64,7 @@ public class PlaceOrderFormController {
         loadCustomerIds();
         loadItemCodes();
         loadOrderIds();
+
         cmbCustomerId.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
             if (newValue!=null){
                 setCustomerData((String) newValue);
@@ -64,19 +77,14 @@ public class PlaceOrderFormController {
         });
 
     }
-
     private void loadOrderIds() {
-        if (Database.orders.size()>0){
-            Order order = Database.orders.get(Database.orders.size() - 1);
-            String selectedOrderId= order.getOrderId();
-            String splitedId = selectedOrderId.split("[A-Z]")[1];
-            int i = Integer.parseInt(splitedId);
-            i++;
-            lblOrderId.setText(" D"+i);
-        }else{
-            lblOrderId.setText(" D1");
+        try {
+            lblOrderId.setText(
+                    orderBo.generateOrderId()
+            );
+        } catch (SQLException |ClassNotFoundException e) {
+            e.printStackTrace();
         }
-
     }
 
     private void setItemData(String code) {
@@ -91,8 +99,13 @@ public class PlaceOrderFormController {
     }
 
     private void loadItemCodes() {
-        for (Item data:Database.items){
-            cmbItemCode.getItems().add(data.getCode());
+        try{
+            ObservableList<String> obList = FXCollections.observableArrayList(
+                    itemBo.loadItemCodes()
+            );
+            cmbItemCode.setItems(obList);
+        }catch(SQLException|ClassNotFoundException e){
+            e.printStackTrace();
         }
     }
 
@@ -109,9 +122,14 @@ public class PlaceOrderFormController {
 
 
     private void loadCustomerIds() {
-        for (Customer data: Database.customers){
-            cmbCustomerId.getItems().add(data.getId());
-        }
+       try{
+           ObservableList<String> obList = FXCollections.observableArrayList(
+                   customerBo.loadCustomerIds()
+           );
+           cmbCustomerId.setItems(obList);
+       }catch(SQLException|ClassNotFoundException e){
+           e.printStackTrace();
+       }
     }
     ObservableList<CartTM> tmList = FXCollections.observableArrayList();
     public void addToCartOnAction(ActionEvent actionEvent) {

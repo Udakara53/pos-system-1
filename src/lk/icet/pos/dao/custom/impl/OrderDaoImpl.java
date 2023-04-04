@@ -2,8 +2,11 @@ package lk.icet.pos.dao.custom.impl;
 
 import lk.icet.pos.dao.CrudUtil;
 import lk.icet.pos.dao.custom.OrderDao;
+import lk.icet.pos.db.Database;
 import lk.icet.pos.entity.Order;
 
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.List;
 
 public class OrderDaoImpl implements OrderDao {
@@ -33,5 +36,20 @@ public class OrderDaoImpl implements OrderDao {
     @Override
     public List<Order> findAll() throws Exception {
         return null;
+    }
+
+    @Override
+    public String generateOrderId() throws SQLException, ClassNotFoundException {
+        ResultSet set = CrudUtil.execute("SELECT order_id FROM orders ORDER BY order_id DESC LIMIT 1");
+        if (set.next()){
+            String selectedOrderId = set.getString(1);
+
+            String splitId = selectedOrderId.split("[A-Z]")[1];
+            int i = Integer.parseInt(splitId);
+            i++;
+            return "D"+i;
+        }else{
+            return "D1";
+        }
     }
 }

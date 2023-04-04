@@ -10,6 +10,7 @@ import lk.icet.pos.entity.Customer;
 import lk.icet.pos.entity.Item;
 import lk.icet.pos.enums.DaoType;
 
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -47,5 +48,10 @@ public class ItemBoImpl implements ItemBo {
             itemDtoList.add(new ItemDto(c.getCode(),c.getDescription(),c.getQtyOnHand(),c.getUnitPrice()));
         }
         return itemDtoList;
+    }
+
+    @Override
+    public List<String> loadItemCodes() throws SQLException, ClassNotFoundException {
+        return itemDao.loadItemCodes();
     }
 }
