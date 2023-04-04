@@ -1,19 +1,21 @@
 package lk.icet.pos.bo.custom.impl;
 
 import lk.icet.pos.bo.custom.ItemBo;
+import lk.icet.pos.dao.DaoFactory;
 import lk.icet.pos.dao.custom.ItemDao;
 import lk.icet.pos.dao.custom.impl.ItemDaoImpl;
 import lk.icet.pos.dto.CustomerDto;
 import lk.icet.pos.dto.ItemDto;
 import lk.icet.pos.entity.Customer;
 import lk.icet.pos.entity.Item;
+import lk.icet.pos.enums.DaoType;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class ItemBoImpl implements ItemBo {
 
-    private ItemDao itemDao = new ItemDaoImpl();
+    private ItemDao itemDao = DaoFactory.getInstance().getDao(DaoType.ITEM);
 
     @Override
     public boolean saveItem(ItemDto dto) throws Exception {
@@ -37,7 +39,7 @@ public class ItemBoImpl implements ItemBo {
     }
 
     @Override
-    public List<ItemDto> findAllItems(String id) throws Exception {
+    public List<ItemDto> findAllItems() throws Exception {
         List<Item> itemList =  itemDao.findAll();
         List<ItemDto> itemDtoList =new ArrayList<>();
         for (Item c:itemList

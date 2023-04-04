@@ -1,17 +1,19 @@
 package lk.icet.pos.bo.custom.impl;
 
 import lk.icet.pos.bo.custom.CustomerBo;
+import lk.icet.pos.dao.DaoFactory;
 import lk.icet.pos.dao.custom.CustomerDao;
 import lk.icet.pos.dao.custom.impl.CustomerDaoImpl;
 import lk.icet.pos.dto.CustomerDto;
 import lk.icet.pos.entity.Customer;
+import lk.icet.pos.enums.DaoType;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class CustomerBoImpl implements CustomerBo {
 
-    private CustomerDao customerDao = new CustomerDaoImpl();
+    private CustomerDao customerDao = DaoFactory.getInstance().getDao(DaoType.CUSTOMER);
     
     @Override
     public boolean saveCustomer(CustomerDto dto) throws Exception {
@@ -42,8 +44,10 @@ public class CustomerBoImpl implements CustomerBo {
         return customerDao.delete(id);
     }
 
+
+
     @Override
-    public List<CustomerDto> findAllCustomers(String id) throws Exception {
+    public List<CustomerDto> findAllCustomers() throws Exception {
         List<Customer> customerList =  customerDao.findAll();
         List<CustomerDto> customerDtoList =new ArrayList<>();
         for (Customer c:customerList

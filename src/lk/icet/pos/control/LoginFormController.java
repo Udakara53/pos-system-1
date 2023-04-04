@@ -8,9 +8,11 @@ import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
-import lk.icet.pos.entity.User;
+import lk.icet.pos.bo.BoFactory;
+import lk.icet.pos.bo.custom.UserBo;
+import lk.icet.pos.dto.UserDto;
+import lk.icet.pos.enums.BOType;
 import org.mindrot.jbcrypt.BCrypt;
-
 import java.io.IOException;
 import java.sql.SQLException;
 
@@ -19,13 +21,15 @@ public class LoginFormController {
     public TextField txtUserName;
     public PasswordField pwd;
 
+    private UserBo bo = BoFactory.getInstance().getBo(BOType.USER);
+
     public void initialize() {
         //Database.users.get(1);//to check password is encrypted.
     }
 
     public void loginOnAction(ActionEvent actionEvent) throws IOException {
         try {
-            User selectedUser = new DataAccessCode().findUser(txtUserName.getText());
+            UserDto selectedUser =bo.findUser(txtUserName.getText());
             if (selectedUser != null) {
                 if (BCrypt.checkpw(pwd.getText(), selectedUser.getPassword())) {
                     //System.out.println("user logged");
@@ -35,12 +39,15 @@ public class LoginFormController {
                     );
                     stage.centerOnScreen();
                 } else {
-                    System.out.println("wrong password");
+                    new Alert(Alert.AlertType.WARNING,"wrong password").show();
                 }
             } else {
                 new Alert(Alert.AlertType.WARNING, "User not found!").show();
             }
         }catch(SQLException|ClassNotFoundException e){
+            e.printStackTrace();
+            new Alert(Alert.AlertType.ERROR,e.getMessage()).show();
+        } catch (Exception e) {
             e.printStackTrace();
             new Alert(Alert.AlertType.ERROR,e.getMessage()).show();
         }
