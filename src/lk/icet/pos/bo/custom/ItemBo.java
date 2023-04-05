@@ -20,4 +20,6 @@ public interface ItemBo  extends SuperBo {
 
     //===============================
     public List<String> loadItemCodes() throws SQLException, ClassNotFoundException;
+
+    public boolean updateQty(String code,int qty) throws SQLException, ClassNotFoundException;
 }

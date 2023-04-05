@@ -54,4 +54,9 @@ public class ItemBoImpl implements ItemBo {
     public List<String> loadItemCodes() throws SQLException, ClassNotFoundException {
         return itemDao.loadItemCodes();
     }
+
+    @Override
+    public boolean updateQty(String code, int qty) throws SQLException, ClassNotFoundException {
+        return itemDao.updateQty(code,qty);
+    }
 }

@@ -1,8 +1,6 @@
 package lk.icet.pos.bo;
 
-import lk.icet.pos.bo.custom.impl.CustomerBoImpl;
-import lk.icet.pos.bo.custom.impl.ItemBoImpl;
-import lk.icet.pos.bo.custom.impl.UserBoImpl;
+import lk.icet.pos.bo.custom.impl.*;
 import lk.icet.pos.dao.custom.impl.CustomerDaoImpl;
 import lk.icet.pos.dao.custom.impl.ItemDaoImpl;
 import lk.icet.pos.dao.custom.impl.UserDaoImpl;
@@ -24,6 +22,8 @@ public class BoFactory {
             case CUSTOMER:return (T) new CustomerBoImpl();
             case USER:return (T) new UserBoImpl();
             case ITEM:return (T) new ItemBoImpl();
+            case ORDER:return (T) new OrderBoImpl();
+            case ORDER_DETAILS:return (T) new OrderDetailsBoImpl();
             default:return null;
         }
     }

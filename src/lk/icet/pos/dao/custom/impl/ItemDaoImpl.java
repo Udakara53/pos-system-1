@@ -58,4 +58,11 @@ public class ItemDaoImpl implements ItemDao {
             list.add(set.getString(1));
         }return list;
     }
+
+    @Override
+    public boolean updateQty(String code, int qty) throws SQLException, ClassNotFoundException {
+        return CrudUtil.execute(
+                "UPDATE item SET qty_on_hand=(qty_on_hand-?) WHERE code=?",qty,code
+        );
+    }
 }

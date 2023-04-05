@@ -14,6 +14,10 @@ import lk.icet.pos.bo.custom.CustomerBo;
 import lk.icet.pos.bo.custom.ItemBo;
 import lk.icet.pos.bo.custom.OrderBo;
 import lk.icet.pos.db.Database;
+import lk.icet.pos.dto.CustomerDto;
+import lk.icet.pos.dto.ItemDto;
+import lk.icet.pos.dto.OrderDetailsDto;
+import lk.icet.pos.dto.OrderDto;
 import lk.icet.pos.entity.Customer;
 import lk.icet.pos.entity.Item;
 import lk.icet.pos.entity.Order;
@@ -88,13 +92,17 @@ public class PlaceOrderFormController {
     }
 
     private void setItemData(String code) {
-        Item item = Database.items.stream().filter(e -> e.getCode().equals(code)).findFirst().orElse(null);
-        if (item!=null){
-            txtDescription.setText(item.getDescription());
-            txtUnitPrice.setText(String.valueOf(item.getUnitPrice()));
-            txtQtyOnHand.setText(String.valueOf(item.getQtyOnHand()));
-        }else{
-            new Alert(Alert.AlertType.WARNING,"Not Found").show();
+        try {
+            ItemDto item = itemBo.findItem(code);
+            if (item != null) {
+                txtDescription.setText(item.getDescription());
+                txtUnitPrice.setText(String.valueOf(item.getUnitPrice()));
+                txtQtyOnHand.setText(String.valueOf(item.getQtyOnHand()));
+            } else {
+                new Alert(Alert.AlertType.WARNING, "Not Found").show();
+            }
+        }catch(Exception e){
+            e.printStackTrace();
         }
     }
 
@@ -110,17 +118,19 @@ public class PlaceOrderFormController {
     }
 
     private void setCustomerData(String id){
-        Customer customer = Database.customers.stream().filter(e -> e.getId().equals(id)).findFirst().orElse(null);
-        if (customer!=null){
-            txtCustomerName.setText(customer.getName());
-            txtCustomerAddress.setText(customer.getAddress());
-            txtSalary.setText(String.valueOf(customer.getSalary()));
-        }else{
-            new Alert(Alert.AlertType.WARNING,"Not Found").show();
+        try {
+            CustomerDto customer = customerBo.findCustomer(id);
+            if (customer != null) {
+                txtCustomerName.setText(customer.getName());
+                txtCustomerAddress.setText(customer.getAddress());
+                txtSalary.setText(String.valueOf(customer.getSalary()));
+            } else {
+                new Alert(Alert.AlertType.WARNING, "Not Found").show();
+            }
+        }catch(Exception e){
+            throw new RuntimeException();
         }
     }
-
-
     private void loadCustomerIds() {
        try{
            ObservableList<String> obList = FXCollections.observableArrayList(
@@ -171,7 +181,6 @@ public class PlaceOrderFormController {
             new Alert(Alert.AlertType.WARNING,String.format("Sorry %s %s is out of stock!",cmbItemCode.getValue(),txtDescription.getText())).show();
         }
     }
-
     private void returnItemToStock(String code, int qty) {
         for (Item i:Database.items){
             if (i.getCode().equals(code)){
@@ -180,8 +189,6 @@ public class PlaceOrderFormController {
             }
         }
     }
-
-
     private boolean isStockExists() {
         return Double.parseDouble(txtQtyOnHand.getText())>=Double.parseDouble(txtRequestQty.getText());
     }
@@ -213,19 +220,27 @@ public class PlaceOrderFormController {
     }
 
     public void saveOrder(ActionEvent actionEvent) {
-         ArrayList<OrderDetails> products = new ArrayList<>();
+         ArrayList<OrderDetailsDto> products = new ArrayList<>();
             for (CartTM tm:tmList){
-                products.add(new OrderDetails(tm.getCode(),"",tm.getUnitPrice(),tm.getQty()));
-                //manageQty(tm.getCode(),tm.getQty());
+                products.add(new OrderDetailsDto(tm.getCode(),lblOrderId.getText(),tm.getUnitPrice(),tm.getQty()) );
+                manageQty(tm.getCode(),tm.getQty());
             }
-            Order order = new Order(lblOrderId.getText(), (String) cmbCustomerId.getValue(),new Date(),
+            OrderDto orderDto = new OrderDto(lblOrderId.getText(), (String) cmbCustomerId.getValue(),new Date(),
                     Double.parseDouble(lblTotal.getText()));
-            Database.orders.add(order);
-            new Alert(Alert.AlertType.INFORMATION,"Order Completed!").show();
-            tmList.clear();
-            tblCart.refresh();
-            lblTotal.setText(String.valueOf(0));
-            loadOrderIds();
+            try{
+                boolean isSaved = orderBo.saveOrder(orderDto, products);
+                if (isSaved){
+                    new Alert(Alert.AlertType.INFORMATION,"Order Completed!").show();
+                    tmList.clear();
+                    tblCart.refresh();
+                    lblTotal.setText(String.valueOf(0));
+                    loadOrderIds();
+                }else{
+                    new Alert(Alert.AlertType.ERROR,"Try Again").show();
+                }
+            }catch(Exception e){
+                e.printStackTrace();
+            }
     }
 
     private void manageQty(String code,int qty) {
