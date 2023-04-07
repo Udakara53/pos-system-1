@@ -3,11 +3,9 @@ package lk.icet.pos.bo.custom.impl;
 import lk.icet.pos.bo.custom.UserBo;
 import lk.icet.pos.dao.DaoFactory;
 import lk.icet.pos.dao.custom.UserDao;
-import lk.icet.pos.dao.custom.impl.UserDaoImpl;
 import lk.icet.pos.dto.UserDto;
 import lk.icet.pos.entity.User;
 import lk.icet.pos.enums.DaoType;
-
 import java.sql.SQLException;
 
 public class UserBoImpl implements UserBo {

@@ -4,7 +4,6 @@ import javafx.scene.control.Alert;
 import lk.icet.pos.dao.CrudUtil;
 import lk.icet.pos.dao.custom.ItemDao;
 import lk.icet.pos.entity.Item;
-
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;

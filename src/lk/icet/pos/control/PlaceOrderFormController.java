@@ -18,13 +18,9 @@ import lk.icet.pos.dto.CustomerDto;
 import lk.icet.pos.dto.ItemDto;
 import lk.icet.pos.dto.OrderDetailsDto;
 import lk.icet.pos.dto.OrderDto;
-import lk.icet.pos.entity.Customer;
 import lk.icet.pos.entity.Item;
-import lk.icet.pos.entity.Order;
-import lk.icet.pos.entity.OrderDetails;
 import lk.icet.pos.enums.BOType;
 import lk.icet.pos.view.tm.CartTM;
-
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.ArrayList;

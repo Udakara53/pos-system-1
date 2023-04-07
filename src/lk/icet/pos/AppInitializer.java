@@ -7,7 +7,6 @@ import javafx.stage.Stage;
 import lk.icet.pos.bo.BoFactory;
 import lk.icet.pos.bo.custom.UserBo;
 import lk.icet.pos.enums.BOType;
-
 import java.io.IOException;
 
 public class AppInitializer extends Application {

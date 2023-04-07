@@ -3,21 +3,15 @@ package lk.icet.pos.bo.custom.impl;
 import lk.icet.pos.bo.custom.ItemBo;
 import lk.icet.pos.dao.DaoFactory;
 import lk.icet.pos.dao.custom.ItemDao;
-import lk.icet.pos.dao.custom.impl.ItemDaoImpl;
-import lk.icet.pos.dto.CustomerDto;
 import lk.icet.pos.dto.ItemDto;
-import lk.icet.pos.entity.Customer;
 import lk.icet.pos.entity.Item;
 import lk.icet.pos.enums.DaoType;
-
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
 public class ItemBoImpl implements ItemBo {
-
     private ItemDao itemDao = DaoFactory.getInstance().getDao(DaoType.ITEM);
-
     @Override
     public boolean saveItem(ItemDto dto) throws Exception {
         return itemDao.save(new Item(dto.getCode(),dto.getDescription(), dto.getQtyOnHand(), dto.getUnitPrice()));

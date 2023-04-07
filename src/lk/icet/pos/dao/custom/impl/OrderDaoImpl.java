@@ -2,9 +2,7 @@ package lk.icet.pos.dao.custom.impl;
 
 import lk.icet.pos.dao.CrudUtil;
 import lk.icet.pos.dao.custom.OrderDao;
-import lk.icet.pos.db.Database;
 import lk.icet.pos.entity.Order;
-
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;

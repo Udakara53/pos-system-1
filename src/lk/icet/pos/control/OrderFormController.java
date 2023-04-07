@@ -14,7 +14,6 @@ import javafx.stage.Stage;
 import lk.icet.pos.db.Database;
 import lk.icet.pos.entity.Order;
 import lk.icet.pos.view.tm.OrderTM;
-
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 

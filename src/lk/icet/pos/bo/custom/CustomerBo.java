@@ -1,9 +1,7 @@
 package lk.icet.pos.bo.custom;
 
 import lk.icet.pos.bo.SuperBo;
-import lk.icet.pos.dao.custom.CustomerDao;
 import lk.icet.pos.dto.CustomerDto;
-
 import java.sql.SQLException;
 import java.util.List;
 

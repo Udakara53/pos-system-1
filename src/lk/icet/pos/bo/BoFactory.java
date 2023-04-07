@@ -1,14 +1,9 @@
 package lk.icet.pos.bo;
 
 import lk.icet.pos.bo.custom.impl.*;
-import lk.icet.pos.dao.custom.impl.CustomerDaoImpl;
-import lk.icet.pos.dao.custom.impl.ItemDaoImpl;
-import lk.icet.pos.dao.custom.impl.UserDaoImpl;
 import lk.icet.pos.enums.BOType;
-import lk.icet.pos.enums.DaoType;
 
 public class BoFactory {
-
     private static BoFactory boFactory;
 
     private BoFactory(){

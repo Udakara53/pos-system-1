@@ -4,7 +4,6 @@ import lk.icet.pos.dao.CrudUtil;
 import lk.icet.pos.dao.custom.UserDao;
 import lk.icet.pos.dao.util.PasswordConfig;
 import lk.icet.pos.entity.User;
-
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
